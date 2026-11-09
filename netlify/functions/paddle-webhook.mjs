@@ -17,7 +17,7 @@
 import { createHmac, timingSafeEqual } from 'node:crypto';
 import { getStore } from '@netlify/blobs';
 
-const PRICE_ID = 'REPLACE_PADDLE_PRICE_ID';
+const PRICE_ID = 'pri_01m70g5ktsc0bhkpg0fr05gz8e';
 const MAX_AGE_SECONDS = 5 * 60; // reject old, replayed webhooks
 const SITE = 'https://mrmortician.com';
 const FROM = { name: "The Mortician's Notebook", email: 'hello@mrmortician.com' };

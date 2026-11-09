@@ -1,7 +1,7 @@
 // ---- Site settings ----
 const PRICE = '$27';               // what the customer actually pays — keep in sync with Paddle
-const PADDLE_TOKEN = 'REPLACE_PADDLE_CLIENT_TOKEN';   // client-side token, safe to publish
-const PADDLE_PRICE_ID = 'REPLACE_PADDLE_PRICE_ID';
+const PADDLE_TOKEN = 'live_55b9495a5ba8668b0abf409e647';   // client-side token, safe to publish
+const PADDLE_PRICE_ID = 'pri_01m70g5ktsc0bhkpg0fr05gz8e';
 
 // ---- Offer display ----
 // PRICE_WAS is struck through wherever PRICE appears. 27 is 40% off 45.
