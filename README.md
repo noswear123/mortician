@@ -9,8 +9,8 @@ download). No build step.
 
 | Placeholder | Where | What |
 |---|---|---|
-| `morticiansnotebook.com` | every `.html`, both functions | the real Porkbun domain |
-| `hello@morticiansnotebook.com` | pages, functions | contact mailbox (Porkbun forwarding + Brevo sender) |
+| `mrmortician.com` | every `.html`, both functions | the real Porkbun domain |
+| `hello@mrmortician.com` | pages, functions | contact mailbox (Porkbun forwarding + Brevo sender) |
 | `@samuelwhitaker` | `index.html` and legal pages | Samuel's real YouTube handle |
 | `REPLACE_PADDLE_CLIENT_TOKEN`, `REPLACE_PADDLE_PRICE_ID` | `script.js` | Paddle client-side token and price ID |
 | `REPLACE_PADDLE_PRICE_ID` | `netlify/functions/paddle-webhook.mjs` | **must equal** the one in `script.js` |

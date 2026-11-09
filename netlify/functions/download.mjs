@@ -7,7 +7,7 @@
 import { getStore } from '@netlify/blobs';
 
 const FILENAME = 'The-Morticians-Notebook-Samuel-Whitaker-2026.pdf';
-const HELP = 'Please email hello@morticiansnotebook.com with your Paddle receipt and we will send your e-book.';
+const HELP = 'Please email hello@mrmortician.com with your Paddle receipt and we will send your e-book.';
 
 const json = (body, status = 200) =>
   Response.json(body, { status, headers: { 'Cache-Control': 'no-store' } });

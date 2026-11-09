@@ -19,8 +19,8 @@ import { getStore } from '@netlify/blobs';
 
 const PRICE_ID = 'REPLACE_PADDLE_PRICE_ID';
 const MAX_AGE_SECONDS = 5 * 60; // reject old, replayed webhooks
-const SITE = 'https://morticiansnotebook.com';
-const FROM = { name: "The Mortician's Notebook", email: 'hello@morticiansnotebook.com' };
+const SITE = 'https://mrmortician.com';
+const FROM = { name: "The Mortician's Notebook", email: 'hello@mrmortician.com' };
 
 // Paddle-Signature: "ts=1671552777;h1=abc..." (several h1 values while a secret is rotated)
 function isValidSignature(rawBody, header, secret) {
