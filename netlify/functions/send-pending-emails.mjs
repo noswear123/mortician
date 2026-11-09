@@ -5,7 +5,7 @@
 import { getStore } from '@netlify/blobs';
 import { sendReceiptOnce } from '../lib/receipt.mjs';
 
-const GRACE_MINUTES = 10;
+const GRACE_MINUTES = 5;
 const GIVE_UP_DAYS = 3;
 
 export default async () => {

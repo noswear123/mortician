@@ -30,7 +30,7 @@ subscribed to `transaction.completed`.
 
 The webhook only records the order. `netlify/functions/send-pending-emails.mjs` runs
 every 5 minutes and emails (confirmation text + the PDF attached + download link) any
-buyer who has not downloaded from the thank-you page within 10 minutes. Downloading
+buyer who has not downloaded from the thank-you page within 5 minutes. Downloading
 from the page marks the order in the `downloaded` store, which suppresses the email;
 the `mailed` store prevents duplicates. Grace period: `GRACE_MINUTES` in that file.
 
