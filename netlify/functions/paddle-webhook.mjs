@@ -58,12 +58,22 @@ function mailBody(link) {
   <p>Thank you for buying <i>The Mortician's Notebook</i>.</p>
   <p><a href="${link}" style="display:inline-block;background:#7D5C17;color:#F6F1E7;padding:14px 26px;border-radius:6px;text-decoration:none;font-weight:bold">Download your e-book</a></p>
   <p>Or paste this into your browser:<br><span style="color:#726856">${link}</span></p>
+  <p>Your e-book is attached to this email as a PDF, and you can also download it
+     from the link above.</p>
   <p>Keep this email &mdash; the link stays valid, so you can download the e-book
      again whenever you need it.</p>
   <p>If the link ever stops working, just reply to this email and we will send your
      e-book straight over.</p>
   <p>With respect,<br>&mdash; Samuel Whitaker</p>
 </div>`;
+}
+
+// The PDF is attached so the buyer has it even if the link is lost. A missing
+// file only costs the attachment; the link in the email still works.
+async function ebookAttachment() {
+  const pdf = await getStore('files').get('ebook.pdf', { type: 'arrayBuffer' });
+  if (!pdf) return [];
+  return [{ name: 'The-Morticians-Notebook-Samuel-Whitaker-2026.pdf', content: Buffer.from(pdf).toString('base64') }];
 }
 
 async function sendReceipt(txn) {
@@ -73,6 +83,7 @@ async function sendReceipt(txn) {
   const to = await buyerEmail(txn);
   if (!to) return 'no_email';
 
+  const attachment = await ebookAttachment();
   const link = `${SITE}/download?txn=${encodeURIComponent(txn.id)}`;
   const r = await fetch('https://api.brevo.com/v3/smtp/email', {
     method: 'POST',
@@ -80,8 +91,9 @@ async function sendReceipt(txn) {
     body: JSON.stringify({
       sender: FROM,
       to: [{ email: to }],
-      subject: 'Your e-book is ready to download',
+      subject: "Your copy of The Mortician's Notebook",
       htmlContent: mailBody(link),
+      ...(attachment.length ? { attachment } : {}),
     }),
   });
   return r.ok ? 'sent' : `brevo_${r.status}`;
