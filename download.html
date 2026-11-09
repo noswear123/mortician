@@ -33,15 +33,15 @@
     <div id="with-link" hidden>
       <p class="thanks__text">Your e-book is ready.</p>
       <a class="btn btn--big btn--download" id="download" href="#" data-umami-event="Download click" aria-disabled="true">Checking your order&hellip;</a>
-      <p class="thanks__mail">We will also send the e-book to your email, with a copy of this download link.</p>
+      <p class="thanks__mail">Download it now from the button above. If you don't, we will send the e-book to your email in a few minutes, with this link.</p>
       <p class="thanks__note" id="note" hidden>The file will be saved to your Downloads folder. You can come back to this page and download it again any time.</p>
     </div>
 
     <!-- Shown straight after checkout, where Paddle sends no transaction id. -->
     <div id="no-link">
-      <p class="thanks__text">Your e-book is ready, and we have emailed it to you.</p>
-      <p class="thanks__mail">Look for a message from <b>hello@mrmortician.com</b> with your
-        download link. It usually arrives within a minute.</p>
+      <p class="thanks__text">Thank you. Your payment is confirmed.</p>
+      <p class="thanks__mail">We are sending the e-book to your email from <b>hello@mrmortician.com</b>,
+        with your download link. It usually arrives within a few minutes.</p>
       <p class="thanks__note">Nothing yet? Check your spam or promotions folder &mdash; a first
         email from a new sender often lands there.</p>
     </div>
@@ -58,6 +58,13 @@
 (function () {
   var q = new URLSearchParams(location.search);
   var txn = q.get('txn') || q.get('_ptxn') || '';
+  // Paddle's redirect may carry no transaction id; use the one saved at checkout.
+  if (!txn) {
+    try {
+      var saved = JSON.parse(localStorage.getItem('lastTxn') || 'null');
+      if (saved && Date.now() - saved.at < 24 * 3600 * 1000) txn = saved.id;
+    } catch (e) {}
+  }
   if (!/^txn_[a-z0-9]{20,40}$/.test(txn)) return;   // leave the "check your email" copy up
 
   document.getElementById('no-link').hidden = true;

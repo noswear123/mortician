@@ -63,6 +63,9 @@ if (window.Paddle) {
       if (e.name === 'checkout.loaded') track('Checkout opened');
       if (e.name === 'checkout.closed') track('Checkout closed without buying');
       if (e.name === 'checkout.completed' && e.data && e.data.transaction_id) {
+        // Paddle's own successUrl redirect can win the race and arrive without a
+        // transaction id, so the download page also reads it from here.
+        store.set('lastTxn', JSON.stringify({ id: e.data.transaction_id, at: Date.now() }));
         const t = e.data.totals || {};
         track('Purchase', { revenue: t.total, currency: e.data.currency_code });
         // short pause so the Purchase event is sent before leaving the page

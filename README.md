@@ -26,6 +26,17 @@ The PDF goes in Netlify Blobs: `netlify blobs:set files ebook.pdf --input <path>
 Paddle: approve the domain, add a notification destination at `/api/paddle-webhook`
 subscribed to `transaction.completed`.
 
+## Buyer email
+
+The webhook only records the order. `netlify/functions/send-pending-emails.mjs` runs
+every 5 minutes and emails (confirmation text + the PDF attached + download link) any
+buyer who has not downloaded from the thank-you page within 10 minutes. Downloading
+from the page marks the order in the `downloaded` store, which suppresses the email;
+the `mailed` store prevents duplicates. Grace period: `GRACE_MINUTES` in that file.
+
+The thank-you page finds the transaction from the URL, or from `localStorage` (saved at
+`checkout.completed`) because Paddle's own redirect carries no transaction id.
+
 ## Purchase flow
 
 Identical to Naomi's: Paddle overlay → `/download` → webhook records the order in the

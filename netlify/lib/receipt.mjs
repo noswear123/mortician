@@ -21,7 +21,7 @@ async function buyerEmail(txn) {
 
 function mailBody(link) {
   return `<div style="font-family:Georgia,serif;font-size:16px;line-height:1.6;color:#16140F;max-width:520px">
-  <p>Thank you for buying <i>The Mortician's Notebook</i>.</p>
+  <p>Thank you for your purchase. This confirms your order of <i>The Mortician's Notebook</i>, and your e-book is below.</p>
   <p><a href="${link}" style="display:inline-block;background:#7D5C17;color:#F6F1E7;padding:14px 26px;border-radius:6px;text-decoration:none;font-weight:bold">Download your e-book</a></p>
   <p>Or paste this into your browser:<br><span style="color:#726856">${link}</span></p>
   <p>Your e-book is attached to this email as a PDF, and you can also download it

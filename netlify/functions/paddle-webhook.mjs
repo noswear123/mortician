@@ -1,6 +1,5 @@
 // Receives Paddle webhooks. On transaction.completed for the e-book price,
-// records the transaction ID as paid so /api/download will serve the PDF, then
-// emails the buyer their download link.
+// records the transaction ID as paid so /api/download will serve the PDF.
 //
 // The email matters more than it looks. Paddle's own receipt carries no link to
 // the download page, and Paddle's successUrl redirect arrives without a
@@ -16,7 +15,6 @@
 //   BREVO_API_KEY          Brevo transactional email key (used in ../lib/receipt.mjs)
 import { createHmac, timingSafeEqual } from 'node:crypto';
 import { getStore } from '@netlify/blobs';
-import { sendReceiptOnce } from '../lib/receipt.mjs';
 
 const PRICE_ID = 'pri_01m70g5ktsc0bhkpg0fr05gz8e';
 const MAX_AGE_SECONDS = 5 * 60; // reject old, replayed webhooks
@@ -61,13 +59,8 @@ export default async req => {
         customerId: txn.customer_id,
       });
       console.log('[paddle] STORED order %s', txn.id);
-      // Best-effort, and never allowed to change the response: a non-2xx would
-      // make Paddle retry for days and resend this email each time.
-      try {
-        console.log('[paddle] receipt %s %s', txn.id, await sendReceiptOnce(txn));
-      } catch (err) {
-        console.error('[paddle] receipt failed %s', txn.id, err);
-      }
+      // No email here: send-pending-emails.mjs emails buyers who have not
+      // downloaded the book from the thank-you page after a short grace period.
     }
   }
 

@@ -5,7 +5,6 @@
 //   GET /api/download?txn=txn_...&check=1  -> { ready: true|false }
 //   GET /api/download?txn=txn_...          -> the PDF
 import { getStore } from '@netlify/blobs';
-import { sendReceiptOnce } from '../lib/receipt.mjs';
 
 const FILENAME = 'The-Morticians-Notebook-Samuel-Whitaker-2026.pdf';
 const HELP = 'Please email hello@mrmortician.com with your Paddle receipt and we will send your e-book.';
@@ -53,12 +52,6 @@ export default async req => {
     if (verified) {
       await orders.setJSON(txn, { paidAt: verified.paidAt, customerId: verified.customerId });
       order = true;
-      // The webhook missed this order, so it will not have emailed the buyer either.
-      try {
-        console.log('[download] receipt %s %s', txn, await sendReceiptOnce({ id: txn, customer_id: verified.customerId }));
-      } catch (err) {
-        console.error('[download] receipt failed %s', txn, err);
-      }
     }
   }
   if (!order) {
@@ -68,6 +61,9 @@ export default async req => {
 
   const pdf = await getStore('files').get('ebook.pdf', { type: 'arrayBuffer' });
   if (!pdf) return new Response(`The e-book file is temporarily unavailable. ${HELP}`, { status: 500 });
+
+  // The buyer took the book from the page, so the follow-up email is not needed.
+  await getStore('downloaded').set(txn, new Date().toISOString());
 
   return new Response(pdf, {
     headers: {
