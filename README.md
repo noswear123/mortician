@@ -14,7 +14,7 @@ download). No build step.
 
 | `live_55b9495a5ba8668b0abf409e647`, `pri_01m70g5ktsc0bhkpg0fr05gz8e` | `script.js` | Paddle client-side token and price ID |
 | `pri_01m70g5ktsc0bhkpg0fr05gz8e` | `netlify/functions/paddle-webhook.mjs` | **must equal** the one in `script.js` |
-| `REPLACE_UMAMI_WEBSITE_ID` | every `.html` | new Umami site |
+| `2b437199-9756-40e7-a5e1-df31898b2b24` | every `.html` | new Umami site |
 | ``$27` / `$45` | `script.js` | price and struck-through "was" price |
 
 Find them all: `grep -rn "REPLACE_" .`
