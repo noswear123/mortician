@@ -5,6 +5,7 @@
 //   GET /api/download?txn=txn_...&check=1  -> { ready: true|false }
 //   GET /api/download?txn=txn_...          -> the PDF
 import { getStore } from '@netlify/blobs';
+import { sendReceiptOnce } from '../lib/receipt.mjs';
 
 const FILENAME = 'The-Morticians-Notebook-Samuel-Whitaker-2026.pdf';
 const HELP = 'Please email hello@mrmortician.com with your Paddle receipt and we will send your e-book.';
@@ -25,7 +26,7 @@ async function paidAtPaddle(txn) {
     const t = (await r.json())?.data;
     const paid = t && ['completed', 'paid'].includes(t.status);
     const isBook = (t?.items || []).some(i => i.price?.id === PRICE_ID);
-    return paid && isBook ? { paidAt: t.billed_at || new Date().toISOString(), customerId: t.customer_id } : null;
+    return paid && isBook ? { id: txn, paidAt: t.billed_at || new Date().toISOString(), customerId: t.customer_id } : null;
   } catch (err) {
     console.error('[download] paddle lookup failed', err);
     return null;
@@ -49,7 +50,16 @@ export default async req => {
   let order = await orders.get(txn);
   if (!order) {
     const verified = await paidAtPaddle(txn);
-    if (verified) { await orders.setJSON(txn, verified); order = true; }
+    if (verified) {
+      await orders.setJSON(txn, { paidAt: verified.paidAt, customerId: verified.customerId });
+      order = true;
+      // The webhook missed this order, so it will not have emailed the buyer either.
+      try {
+        console.log('[download] receipt %s %s', txn, await sendReceiptOnce({ id: txn, customer_id: verified.customerId }));
+      } catch (err) {
+        console.error('[download] receipt failed %s', txn, err);
+      }
+    }
   }
   if (!order) {
     return checkOnly ? json({ ready: false }) : new Response(`We could not find a completed payment for this order yet. ${HELP}`, { status: 404 });
