@@ -11,7 +11,7 @@ download). No build step.
 |---|---|---|
 | `mrmortician.com` | every `.html`, both functions | the real Porkbun domain |
 | `hello@mrmortician.com` | pages, functions | contact mailbox (Porkbun forwarding + Brevo sender) |
-| `@samuelwhitaker` | `index.html` and legal pages | Samuel's real YouTube handle |
+
 | `live_55b9495a5ba8668b0abf409e647`, `pri_01m70g5ktsc0bhkpg0fr05gz8e` | `script.js` | Paddle client-side token and price ID |
 | `pri_01m70g5ktsc0bhkpg0fr05gz8e` | `netlify/functions/paddle-webhook.mjs` | **must equal** the one in `script.js` |
 | `REPLACE_UMAMI_WEBSITE_ID` | every `.html` | new Umami site |
