@@ -1,13 +1,13 @@
 // ---- Site settings ----
-const PRICE = '$24.99';               // what the customer actually pays — keep in sync with Paddle
+const PRICE = '$27';               // what the customer actually pays — keep in sync with Paddle
 const PADDLE_TOKEN = 'REPLACE_PADDLE_CLIENT_TOKEN';   // client-side token, safe to publish
 const PADDLE_PRICE_ID = 'REPLACE_PADDLE_PRICE_ID';
 
 // ---- Offer display ----
-// PRICE_WAS is struck through wherever PRICE appears. 24.99 is 50% off 49.98.
+// PRICE_WAS is struck through wherever PRICE appears. 27 is 40% off 45.
 // Set PRICE_WAS to '' to remove the strike-through and the badges everywhere.
-const PRICE_WAS = '$49.98';
-const DISCOUNT_PCT = '50%';
+const PRICE_WAS = '$45';
+const DISCOUNT_PCT = '40%';
 // If the saving is a real Paddle discount rather than only a label, put its code
 // here and it is applied automatically, so the Paddle overlay shows the same
 // before/after figures as the page. Leave '' to send the customer straight to PRICE.
@@ -24,8 +24,8 @@ document.querySelectorAll('[data-offer]').forEach(el => {
 
 
 
-// ---- Sales popup: once per visitor, 5 seconds after the first visit ----
-const POPUP_DELAY = 5000;
+// ---- Sales popup: once per visitor, 15 seconds after the first visit ----
+const POPUP_DELAY = 15000;
 const popup = document.getElementById('popup');
 const store = {
   get: k => { try { return localStorage.getItem(k); } catch { return null; } },
