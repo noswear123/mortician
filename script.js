@@ -22,7 +22,29 @@ document.querySelectorAll('[data-offer]').forEach(el => {
   if (el.hasAttribute('data-price-was')) el.textContent = PRICE_WAS;
 });
 
+// ---- Sale countdown (top strip only) ----
+// A real, fixed deadline — not a per-visitor reset. Extend it here to run the sale longer.
+const SALE_ENDS_AT = new Date('2026-11-17T23:59:59-05:00').getTime();
 
+function renderCountdown() {
+  const els = document.querySelectorAll('[data-countdown-text]');
+  if (!els.length) return;
+  const remaining = SALE_ENDS_AT - Date.now();
+  if (remaining <= 0) {
+    els.forEach(el => el.closest('.strip__mid')?.remove());
+    clearInterval(countdownTimer);
+    return;
+  }
+  const pad = n => String(n).padStart(2, '0');
+  const d = Math.floor(remaining / 86400000);
+  const h = Math.floor((remaining % 86400000) / 3600000);
+  const m = Math.floor((remaining % 3600000) / 60000);
+  const text = `${d}:${pad(h)}:${pad(m)}`;
+  els.forEach(el => { el.textContent = text; });
+}
+let countdownTimer;
+renderCountdown();
+countdownTimer = setInterval(renderCountdown, 30000);
 
 // ---- Sales popup: once per visitor, 15 seconds after the first visit ----
 const POPUP_DELAY = 15000;

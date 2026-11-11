@@ -136,11 +136,10 @@ p { margin: 0 0 1em; color: var(--ink-2); }
 
 /* ============ TOP STRIP + NAV ============ */
 .strip { background: var(--ink); color: var(--cream-2); font-family: var(--type); font-size: .74rem; letter-spacing: .12em; text-transform: uppercase; }
-.strip__in { display: flex; justify-content: space-between; gap: 16px; padding-top: 9px; padding-bottom: 9px; }
+.strip__in { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 8px 18px; padding-top: 9px; padding-bottom: 9px; }
 .strip__mid { color: var(--honey); }
 @media (max-width: 760px) {
   .strip__in { justify-content: center; }
-  .strip__in span:not(.strip__mid) { display: none; }
 }
 
 .nav {
@@ -173,6 +172,17 @@ p { margin: 0 0 1em; color: var(--ink-2); }
 }
 .hero__grid { position: relative; display: grid; grid-template-columns: 1.1fr .9fr; gap: clamp(40px, 6vw, 80px); align-items: center; }
 .hero__lede { font-size: 1.15rem; max-width: 34em; }
+.herostats { display: grid; grid-template-columns: repeat(2, minmax(140px, 1fr)); gap: 0; max-width: 460px; margin: 6px 0 0; padding: 20px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); text-align: center; }
+.herostats div { padding-left: 28px; border-left: 1px solid var(--line); }
+.herostats div:first-child { padding-left: 0; border-left: 0; }
+.herostats dt { font-family: var(--display); font-weight: 600; font-size: clamp(2.4rem, 4.4vw, 3.2rem); line-height: 1; color: var(--ink); }
+.herostats dt em { color: var(--paprika); font-style: italic; }
+.herostats dd { margin: 8px 0 0; font-family: var(--type); font-size: .74rem; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-mute); }
+@media (max-width: 460px) {
+  .herostats { grid-template-columns: 1fr; gap: 14px 0; }
+  .herostats div { border-left: 0; padding-left: 0; padding-top: 14px; border-top: 1px dashed var(--line); }
+  .herostats div:first-child { border-top: 0; padding-top: 0; }
+}
 .hero__cta { display: flex; flex-wrap: wrap; gap: 14px; margin: 30px 0 38px; }
 .stats { display: flex; gap: 0; margin: 0; border-top: 1px dashed var(--line); padding-top: 22px; }
 .stats div { padding-right: 30px; margin-right: 30px; border-right: 1px dashed var(--line); }
@@ -525,6 +535,7 @@ body.has-popup { overflow: hidden; }
 
 /* Red SAVE chip in the top strip, in place of the price */
 .strip__save { display: inline-block; background: var(--paprika); color: var(--card); font-weight: 700; letter-spacing: .1em; padding: 1px 7px; border-radius: 3px; }
+.strip__countdown { display: inline-block; background: var(--paprika); color: var(--card); font-weight: 700; letter-spacing: .06em; padding: 1px 7px; border-radius: 3px; margin-left: 4px; font-variant-numeric: tabular-nums; }
 
 
 /* Popup: former price sits above the "50% off today" line */
