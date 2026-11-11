@@ -23,28 +23,24 @@ document.querySelectorAll('[data-offer]').forEach(el => {
 });
 
 // ---- Sale countdown (top strip only) ----
-// A real, fixed deadline — not a per-visitor reset. Extend it here to run the sale longer.
-const SALE_ENDS_AT = new Date('2026-11-17T23:59:59-05:00').getTime();
+// Repeats on a 24h cycle, synced to this anchor (same countdown for every
+// visitor at a given moment, not a per-visitor reset).
+const CYCLE_MS = 24 * 60 * 60 * 1000;
+const CYCLE_ANCHOR = new Date('2026-11-17T23:59:59-05:00').getTime();
 
 function renderCountdown() {
   const els = document.querySelectorAll('[data-countdown-text]');
   if (!els.length) return;
-  const remaining = SALE_ENDS_AT - Date.now();
-  if (remaining <= 0) {
-    els.forEach(el => el.closest('.strip__mid')?.remove());
-    clearInterval(countdownTimer);
-    return;
-  }
+  const elapsed = ((Date.now() - CYCLE_ANCHOR) % CYCLE_MS + CYCLE_MS) % CYCLE_MS;
+  const remaining = CYCLE_MS - elapsed;
   const pad = n => String(n).padStart(2, '0');
-  const d = Math.floor(remaining / 86400000);
-  const h = Math.floor((remaining % 86400000) / 3600000);
+  const h = Math.floor(remaining / 3600000);
   const m = Math.floor((remaining % 3600000) / 60000);
-  const text = `${d}:${pad(h)}:${pad(m)}`;
-  els.forEach(el => { el.textContent = text; });
+  const s = Math.floor((remaining % 60000) / 1000);
+  els.forEach(el => { el.textContent = `${pad(h)}:${pad(m)}:${pad(s)}`; });
 }
-let countdownTimer;
 renderCountdown();
-countdownTimer = setInterval(renderCountdown, 30000);
+setInterval(renderCountdown, 1000);
 
 // ---- Sales popup: once per visitor, 15 seconds after the first visit ----
 const POPUP_DELAY = 15000;
